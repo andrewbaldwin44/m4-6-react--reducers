@@ -4,11 +4,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
-import SeatAvailable from "../assets/SeatAvailable.svg";
 import { SeatContext } from './SeatContext';
-
-import Tippy from '@tippy.js/react';
-import 'tippy.js/dist/tippy.css';
+import Seat from './Seat';
 
 const TicketWidget = () => {
   const {
@@ -25,18 +22,12 @@ const TicketWidget = () => {
               <RowLabel>Row {rowName}</RowLabel>
 
               {range(seatsPerRow).map(seatIndex => {
-                const seatNum = getSeatNum(seatIndex);
-                const seatID = `${rowName}-${seatNum}`;
-                const isAvailable = bookedSeats[seatID];
-                const toolTipContent = isAvailable
-                  ? `Row ${rowName}, Seat ${seatNum} - $185`
-                  : 'Unavailable';
-
                 return (
-                  <SeatWrapper key={seatID}>
-                    <Tippy content={toolTipContent}>
-                      <Seat src={SeatAvailable} isAvailable={isAvailable} />
-                    </Tippy>
+                  <SeatWrapper key={seatIndex}>
+                    <Seat
+                      rowName={rowName}
+                      seatIndex={seatIndex}
+                    />
                   </SeatWrapper>
                 );
               })}
@@ -87,11 +78,6 @@ const RowLabel = styled.div`
 
 const SeatWrapper = styled.div`
   padding: 5px;
-`;
-
-const Seat = styled.img`
-  cursor: pointer;
-  filter: ${props => !props.isAvailable ? 'grayscale(100%)': ''};
 `;
 
 export default TicketWidget;
