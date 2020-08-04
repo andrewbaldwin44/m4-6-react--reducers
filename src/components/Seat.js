@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { getSeatNum } from '../helpers';
 import SeatAvailable from '../assets/SeatAvailable.svg';
 import { SeatContext } from './SeatContext';
+import { BookingContext } from './BookingContext';
 
 import Tippy from '@tippy.js/react';
 import 'tippy.js/dist/tippy.css';
@@ -13,18 +14,31 @@ function Seat({ rowName, seatIndex }) {
     state: { bookedSeats }
   } = useContext(SeatContext);
 
+  const {
+    actions: { beginBookingProcess }
+  } = useContext(BookingContext);
+
   const seatNumber = getSeatNum(seatIndex)
-  const isBooked = bookedSeats[seatNumber];
-  const seatNum = getSeatNum(seatIndex);
   const seatID = `${rowName}-${seatNumber}`;
+  const isBooked = bookedSeats[seatID];
+  const price = 185;
 
   const toolTipContent = isBooked
     ? 'Unavailable'
-    : `Row ${rowName}, Seat ${seatNum} - $185`;
+    : `Row ${rowName}, Seat ${seatNumber} - $${price}`;
+
+  const handleSeatSelect = event => {
+    const seatInformation = {
+      seat: seatNumber,
+      price
+    }
+
+    beginBookingProcess(seatInformation);
+  }
 
   return (
     <Tippy content={toolTipContent}>
-      <SeatSelect>
+      <SeatSelect onClick={handleSeatSelect}>
         <SeatImage src={SeatAvailable} isBooked={isBooked} />
       </SeatSelect>
     </Tippy>

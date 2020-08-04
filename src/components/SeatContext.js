@@ -40,7 +40,7 @@ export function SeatProvider({ children }) {
         state,
         actions: {
           receiveSeatInfoFromServer,
-        },
+        }
       }}
     >
       {children}

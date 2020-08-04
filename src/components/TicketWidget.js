@@ -2,14 +2,14 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { getRowName, getSeatNum } from '../helpers';
+import { getRowName } from '../helpers';
 import { range } from '../utils';
 import { SeatContext } from './SeatContext';
 import Seat from './Seat';
 
 const TicketWidget = () => {
   const {
-    state: { numOfRows, seatsPerRow, hasLoaded, bookedSeats }
+    state: { numOfRows, seatsPerRow, hasLoaded }
   } = useContext(SeatContext);
 
   if (hasLoaded) {
