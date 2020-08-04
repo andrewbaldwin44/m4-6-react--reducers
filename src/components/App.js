@@ -3,6 +3,7 @@ import React, { useEffect, useContext } from 'react';
 import { SeatContext } from './SeatContext';
 
 import GlobalStyles from './GlobalStyles';
+import TicketWidget from "./TicketWidget";
 
 function App() {
   const {
@@ -19,7 +20,7 @@ function App() {
   return (
     <>
       <GlobalStyles />
-      This venue has {numOfRows} rows!
+      <TicketWidget />
     </>
   );
 }
