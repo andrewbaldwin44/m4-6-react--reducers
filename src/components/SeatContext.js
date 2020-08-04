@@ -4,7 +4,7 @@ export const SeatContext = createContext();
 
 const initialState = {
   hasLoaded: false,
-  bookedSeats: null,
+  seats: null,
   numOfRows: 0,
   seatsPerRow: 0,
 };
@@ -15,7 +15,7 @@ function reducer(state, action) {
       return {
         ...state,
         hasLoaded: true,
-        bookedSeats: action.bookedSeats,
+        seats: action.seats,
         numOfRows: action.numOfRows,
         seatsPerRow: action.seatsPerRow,
       };

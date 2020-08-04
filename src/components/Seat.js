@@ -11,7 +11,7 @@ import 'tippy.js/dist/tippy.css';
 
 function Seat({ rowName, seatIndex }) {
   const {
-    state: { bookedSeats }
+    state: { seats }
   } = useContext(SeatContext);
 
   const {
@@ -20,8 +20,9 @@ function Seat({ rowName, seatIndex }) {
 
   const seatNumber = getSeatNum(seatIndex)
   const seatID = `${rowName}-${seatNumber}`;
-  const isBooked = bookedSeats[seatID];
-  const price = 185;
+
+  const seat = seats[seatID];
+  const { price, isBooked } = seat;
 
   const toolTipContent = isBooked
     ? 'Unavailable'
