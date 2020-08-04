@@ -15,9 +15,11 @@ function reducer(state, action) {
       return {
         ...state,
         status: 'seat-selected',
-        seatSelectedID: action.seat,
+        selectedSeatID: action.seat,
         price: action.price,
       };
+    case 'reset-booking-process':
+      return initialState;
     default:
       throw new Error(`Unrecognized action: ${action.type}`);
   }
@@ -33,13 +35,18 @@ export function BookingProvider({ children }) {
     });
   };
 
+  const resetBookingProccess = () => {
+    dispatch({ type: 'reset-booking-process' })
+  }
+
   return (
     <BookingContext.Provider
       value ={{
         state,
         actions: {
           beginBookingProcess,
-        }
+          resetBookingProccess
+        },
       }}
     >
       {children}

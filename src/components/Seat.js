@@ -39,7 +39,10 @@ function Seat({ rowName, seatIndex }) {
 
   return (
     <Tippy content={toolTipContent}>
-      <SeatSelect onClick={handleSeatSelect}>
+      <SeatSelect
+        onClick={handleSeatSelect}
+        disabled={isBooked}
+      >
         <SeatImage src={SeatAvailable} isBooked={isBooked} />
       </SeatSelect>
     </Tippy>
