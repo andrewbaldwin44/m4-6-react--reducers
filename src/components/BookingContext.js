@@ -55,11 +55,13 @@ export function BookingProvider({ children }) {
       body: JSON.stringify(data)
     }
 
+
     fetch('/api/book-seat', ticketPurchaseData)
       .then(response => response.json())
       .then(data => {
+        console.log(data);
         dispatch({
-          type: "seat-purchaed"
+          type: "seat-purchased"
         })
       })
   }

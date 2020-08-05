@@ -32,8 +32,10 @@ function PurchaseModal() {
 
   const handleFormSubmit = event => {
     // seatId, creditCard, expiration
+    console.log(seatNumber)
     event.preventDefault();
-    purchaseTicketRequest({ seatNumber, creditCard, expiration });
+    purchaseTicketRequest({ seatId: `${row}-${seatNumber}`, creditCard, expiration });
+    handleClose();
   }
 
   return (
@@ -74,7 +76,7 @@ function PurchaseModal() {
             onInput={updateExpiration}
             required
           />
-          <SubmitButton onClick={handleClose} variant="contained" color="primary" type="submit">
+          <SubmitButton variant="contained" color="primary" type="submit">
             Purchase
           </SubmitButton>
         </Form>
