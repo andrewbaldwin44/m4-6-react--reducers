@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { BookingContext } from "./BookingContext";
@@ -16,7 +15,7 @@ function PurchaseModal() {
 
   const {
     state: { seatNumber, row, price },
-    actions: { resetBookingProccess }
+    actions: { resetBookingProccess, purchaseTicketRequest }
   } = useContext(BookingContext);
 
   const handleClose = () => {
@@ -29,6 +28,12 @@ function PurchaseModal() {
 
   const updateExpiration = event => {
     setExpiration(event.target.value);
+  }
+
+  const handleFormSubmit = event => {
+    // seatId, creditCard, expiration
+    event.preventDefault();
+    purchaseTicketRequest({ seatNumber, creditCard, expiration });
   }
 
   return (
@@ -56,18 +61,20 @@ function PurchaseModal() {
         <Bold>
           Enter payment details
         </Bold>
-        <Form>
+        <Form onSubmit={handleFormSubmit}>
           <TextField
             label="Credit card"
             variant="outlined"
             onInput={updateCreditCard}
+            required
           />
           <SmallField
             label="Expiration"
             variant="outlined"
             onInput={updateExpiration}
+            required
           />
-          <SubmitButton onClick={handleClose} variant="contained" color="primary">
+          <SubmitButton onClick={handleClose} variant="contained" color="primary" type="submit">
             Purchase
           </SubmitButton>
         </Form>

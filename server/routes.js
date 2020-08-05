@@ -18,11 +18,10 @@ for (let r = 0; r < row.length; r++) {
   }
 }
 // ----------------------------------
-let state = true;
+let state;
 router.get("/api/seat-availability", (req, res) => {
-  if (state) {
-    randomlyBookSeats(30),
-    state = false;
+  if (!state) {
+    state = randomlyBookSeats(30);
   }
 
   return res.json({
@@ -69,12 +68,18 @@ const getRowName = (rowIndex) => {
   return String.fromCharCode(65 + rowIndex);
 };
 const randomlyBookSeats = (num) => {
+  const bookedSeats = {};
+
   while (num > 0) {
     const row = Math.floor(Math.random() * NUM_OF_ROWS);
     const seat = Math.floor(Math.random() * SEATS_PER_ROW);
     const seatId = `${getRowName(row)}-${seat + 1}`;
+
     seats[seatId].isBooked = true;
+    bookedSeats[seatId] = true;
+
     num--;
   }
+  return seats;
 };
 module.exports = router;
