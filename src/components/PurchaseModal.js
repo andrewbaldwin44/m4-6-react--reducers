@@ -1,42 +1,129 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { BookingContext } from "./BookingContext";
 
 function PurchaseModal() {
+  const [creditCard, setCreditCard] = useState("");
+  const [expiration, setExpiration] = useState("");
+
   const {
-    state: { selectedSeatID },
+    state: { seatNumber, row, price },
     actions: { resetBookingProccess }
   } = useContext(BookingContext);
-
-  console.log(selectedSeatID);
 
   const handleClose = () => {
     resetBookingProccess();
   }
 
+  const updateCreditCard = event => {
+    setCreditCard(event.target.value);
+  }
+
+  const updateExpiration = event => {
+    setExpiration(event.target.value);
+  }
+
   return (
-    <Wrapper
-      open={selectedSeatID !== null}
+    <Dialog
+      open={seatNumber !== null}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
+      <DialogTitle id="form-dialog-title">Purchase ticket</DialogTitle>
       <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {`Thank you for selecting seat ${selectedSeatID}`}
-          </DialogContentText>
+        <SubTitle>
+          You're purchasing <Bold>1</Bold> ticket for the price of ${price}
+        </SubTitle>
+        <Grid>
+          <span className='header'>Row</span>
+          <span className='header'>Seat</span>
+          <span className='header'>Price</span>
+          <span>{row}</span>
+          <span>{seatNumber}</span>
+          <span>{price}</span>
+        </Grid>
       </DialogContent>
-    </Wrapper>
+      <FormSection>
+        <Bold>
+          Enter payment details
+        </Bold>
+        <Form>
+          <TextField
+            label="Credit card"
+            variant="outlined"
+            onInput={updateCreditCard}
+          />
+          <SmallField
+            label="Expiration"
+            variant="outlined"
+            onInput={updateExpiration}
+          />
+          <SubmitButton onClick={handleClose} variant="contained" color="primary">
+            Purchase
+          </SubmitButton>
+        </Form>
+      </FormSection>
+    </Dialog>
   )
 }
 
-const Wrapper = styled(Dialog)`
-  background-color: transparent;
+const SubTitle = styled.span`
+  color: black;
+
+`;
+
+const Bold = styled.span`
+  font-weight: bold;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  padding: 50px 20px;
+  grid-row-gap: 20px;
+
+  .header {
+    font-weight: bold;
+  }
+
+  span {
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 10px;
+    padding-left: 10px;
+  }
+`;
+
+const FormSection = styled(DialogContent)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #eeeeee;
+  height: 150px;
+`;
+
+const Form = styled.form`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 460px;
+`;
+
+const SmallField = styled(TextField)`
+  width: 100px;
+`;
+
+const SubmitButton = styled(Button)`
+  height: 100%;
 `;
 
 export default PurchaseModal;

@@ -5,7 +5,8 @@ export const BookingContext = createContext();
 const initialState = {
   status: "idle",
   error: null,
-  selectedSeatID: null,
+  seatNumber: null,
+  row: null,
   price: null,
 };
 
@@ -15,7 +16,8 @@ function reducer(state, action) {
       return {
         ...state,
         status: 'seat-selected',
-        selectedSeatID: action.seat,
+        seatNumber: action.seatNumber,
+        row: action.row,
         price: action.price,
       };
     case 'reset-booking-process':

@@ -30,7 +30,8 @@ function Seat({ rowName, seatIndex }) {
 
   const handleSeatSelect = event => {
     const seatInformation = {
-      seat: seatNumber,
+      seatNumber: seatNumber,
+      row: rowName,
       price
     }
 
