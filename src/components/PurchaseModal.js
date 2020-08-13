@@ -8,15 +8,20 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { BookingContext } from "./BookingContext";
+import { SeatContext } from './SeatContext';
 
 function PurchaseModal() {
   const [creditCard, setCreditCard] = useState("");
   const [expiration, setExpiration] = useState("");
 
   const {
-    state: { seatNumber, row, price },
-    actions: { resetBookingProccess, purchaseTicketRequest }
+    state: { seatNumber, row, price, status },
+    actions: { resetBookingProccess, purchaseTicketRequest, startPurchase }
   } = useContext(BookingContext);
+
+  const {
+    actions: { markSeatAsPurchased },
+  } = useContext(SeatContext);
 
   const handleClose = () => {
     resetBookingProccess();
@@ -32,15 +37,20 @@ function PurchaseModal() {
 
   const handleFormSubmit = event => {
     // seatId, creditCard, expiration
-    console.log(seatNumber)
     event.preventDefault();
-    purchaseTicketRequest({ seatId: `${row}-${seatNumber}`, creditCard, expiration });
-    handleClose();
+
+    const seatId = `${row}-${seatNumber}`;
+
+    startPurchase();
+
+    purchaseTicketRequest({ seatId, creditCard, expiration })
+      .then(() => markSeatAsPurchased(seatId))
+      .then(() => handleClose());
   }
 
   return (
     <Dialog
-      open={seatNumber !== null}
+      open={seatNumber !== null && status !== 'purchasing'}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"

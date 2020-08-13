@@ -8,6 +8,7 @@ const initialState = {
   seatNumber: null,
   row: null,
   price: null,
+  purchased: false,
 };
 
 function reducer(state, action) {
@@ -22,10 +23,16 @@ function reducer(state, action) {
       };
     case 'reset-booking-process':
       return initialState;
+    case 'start-seat-purchase':
+      return {
+        ...state,
+        status: 'purchasing',
+      }
     case 'seat-purchased':
       return {
         ...initialState,
-        status: "idle"
+        status: "idle",
+        purchased: true,
       }
     default:
       throw new Error(`Unrecognized action: ${action.type}`);
@@ -43,7 +50,11 @@ export function BookingProvider({ children }) {
   };
 
   const resetBookingProccess = () => {
-    dispatch({ type: 'reset-booking-process' })
+    dispatch({ type: 'reset-booking-process' });
+  }
+
+  const startPurchase = () => {
+    dispatch({ type: 'start-seat-purchase' });
   }
 
   const purchaseTicketRequest = data => {
@@ -56,10 +67,9 @@ export function BookingProvider({ children }) {
     }
 
 
-    fetch('/api/book-seat', ticketPurchaseData)
+    return fetch('/api/book-seat', ticketPurchaseData)
       .then(response => response.json())
-      .then(data => {
-        console.log(data);
+      .then(() => {
         dispatch({
           type: "seat-purchased"
         })
@@ -73,7 +83,8 @@ export function BookingProvider({ children }) {
         actions: {
           beginBookingProcess,
           resetBookingProccess,
-          purchaseTicketRequest
+          purchaseTicketRequest,
+          startPurchase,
         },
       }}
     >

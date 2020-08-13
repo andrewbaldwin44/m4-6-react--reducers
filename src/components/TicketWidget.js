@@ -7,12 +7,18 @@ import { range } from '../utils';
 import { SeatContext } from './SeatContext';
 import Seat from './Seat';
 
+import { BookingContext } from "./BookingContext";
+
 const TicketWidget = () => {
   const {
     state: { numOfRows, seatsPerRow, hasLoaded }
   } = useContext(SeatContext);
 
-  if (hasLoaded) {
+  const {
+    state: { status },
+  } = useContext(BookingContext);
+
+  if (hasLoaded && status !== 'purchasing') {
     return (
       <Wrapper>
         {range(numOfRows).map(rowIndex => {
